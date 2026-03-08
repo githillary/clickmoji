@@ -95,7 +95,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .card-score-lbl{font-size:8px;letter-spacing:2px;color:var(--mt);text-transform:uppercase;margin-top:2px;font-family:'Space Mono',monospace}
 .card-restart{font-family:'Libre Baskerville',serif;font-size:10px;color:var(--mt);cursor:pointer;text-decoration:underline;text-decoration-color:var(--bd);text-underline-offset:2px;transition:color .15s;margin-left:4px}
 .card-restart:hover{color:var(--tx);text-decoration-color:var(--tx)}
-.training-status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:4px 10px;border:1px solid var(--bd);color:var(--mt);text-transform:uppercase;text-align:right;max-width:220px}
+.training-status{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;padding:4px 10px;border:1px solid var(--bd);color:var(--mt);text-transform:uppercase;text-align:right;max-width:320px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .training-status.ts-easy{border-color:var(--green);color:var(--green)}
 .training-status.ts-medium{border-color:var(--gold);color:var(--gold)}
 .training-status.ts-hard{border-color:var(--orange);color:var(--orange)}
@@ -116,8 +116,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .badge-input{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;border:none;border-bottom:2px solid var(--bd);background:transparent;text-align:center;padding:4px 8px;width:260px;color:var(--tx);outline:none;transition:border-color .2s}
 .badge-input:focus{border-bottom-color:var(--tx)}
 .badge-dept{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--mt);margin-top:8px}
-.name-regen{background:none;border:1px solid var(--bd);font-family:'Space Mono',monospace;font-size:10px;color:var(--mt);cursor:pointer;padding:3px 8px;margin-top:6px;transition:all .15s;letter-spacing:1px}
-.name-regen:hover{border-color:var(--tx);color:var(--tx)}
+.badge-name-row{display:flex;align-items:center;justify-content:center;gap:6px}
+.name-shuffle{cursor:pointer;font-size:16px;opacity:.4;transition:opacity .15s;user-select:none}
+.name-shuffle:hover{opacity:1}
 
 .how{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 0 18px;text-align:left}
 @media(max-width:540px){.how{grid-template-columns:1fr}}
@@ -141,7 +142,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 /* ═══ QUESTION ═══ */
 .edisplay{font-size:clamp(32px,7vw,54px);letter-spacing:8px;padding:18px;text-align:center;background:var(--bg);border:1px solid var(--bd);margin-bottom:20px;word-break:break-all;animation:er .35s cubic-bezier(.34,1.56,.64,1)}
 @keyframes er{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-.qprompt{font-family:'Libre Baskerville',serif;font-size:12px;color:var(--mt);letter-spacing:.5px;margin-bottom:14px;font-style:italic}
+.qprompt-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.qprompt{font-family:'Libre Baskerville',serif;font-size:12px;color:var(--mt);letter-spacing:.5px;font-style:italic}
 
 /* Answer options */
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -159,7 +161,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 @keyframes flashPop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
 .cfbig{font-family:'Playfair Display',serif;font-weight:900;font-size:36px;line-height:1;color:var(--green)}
 .cfpts{font-size:11px;color:var(--mt);letter-spacing:1px;margin-top:4px;font-family:'Space Mono',monospace}
-.kbh{text-align:center;margin-top:10px;font-size:10px;color:var(--mt);letter-spacing:1px;font-family:'Space Mono',monospace}
+.kbh{font-size:10px;color:var(--mt);letter-spacing:1px;font-family:'Space Mono',monospace;white-space:nowrap}
 @media(max-width:768px){.kbh{display:none}}
 
 /* ═══ GAME OVER ═══ */
@@ -195,6 +197,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 /* ═══ ANIMATIONS ═══ */
 @keyframes si{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .card{animation:si .3s cubic-bezier(.16,1,.3,1)}
+
+/* ═══ FLOATING EMOJI REACT ═══ */
+.emoji-react{position:fixed;pointer-events:none;z-index:9999;font-size:24px;animation:emojiFloat 1.2s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes emojiFloat{0%{opacity:1;transform:translateY(0) scale(.5)}20%{transform:translateY(-20px) scale(1.2)}100%{opacity:0;transform:translateY(-120px) scale(.8)}}
 </style>
 </head>
 <body>
@@ -257,18 +263,15 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
   <div class="badge-wrap">
     <div class="badge-photo" id="badgePhoto">🪪</div>
     <div class="badge-label">Employee Name</div>
-    <input type="text" class="badge-input" id="playerName" maxlength="24" spellcheck="false">
+    <div class="badge-name-row"><input type="text" class="badge-input" id="playerName" maxlength="24" spellcheck="false"><span class="name-shuffle" onclick="regenName()" title="New name">🔀</span></div>
     <div class="badge-dept">Emoji Desk &middot; Translation Division</div>
-    <button class="name-regen" onclick="regenName()" title="Generate new name">&#x1f504; new name</button>
   </div>
   <div class="how">
     <div class="hs"><div class="sn">01</div><div class="st"><strong>Review the emojis</strong><br>The AI's attempt at translating a headline.</div></div>
     <div class="hs"><div class="sn">02</div><div class="st"><strong>Match the headline</strong><br>Four candidates. They get harder to tell apart.</div></div>
     <div class="hs"><div class="sn">03</div><div class="st"><strong>Beat the deadline</strong><br>Timer kicks in and gets shorter each round.</div></div>
   </div>
-  <button class="btnp" onclick="startGame()">Clock In</button>
-  <p style="margin-top:8px;font-size:9px;color:var(--mt);letter-spacing:2px;font-family:'Space Mono',monospace">ONE MISTAKE &middot; YOU'RE FIRED</p>
-  <p class="kbh" style="margin-top:5px">press enter to start</p>
+  <button class="btnp" onclick="startGame()">Clock In &#x23CE;</button>
 </div>
 
 <!-- GAME AREA -->
@@ -281,6 +284,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
         <span class="card-restart" onclick="confirmRestart()">&#8635; Start over</span>
       </div>
       <div class="training-status" id="trainStatus">INTERN</div>
+
     </div>
     <div class="timer-wrap" id="tw">
       <div class="timer-row">
@@ -290,9 +294,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
       <div class="timer-track"><div class="timer-bar" id="tb"></div></div>
     </div>
     <div class="edisplay" id="ed"></div>
-    <div class="qprompt">Which headline does this emoji sequence represent?</div>
+    <div class="qprompt-row">
+      <div class="qprompt">Which headline does this emoji sequence represent?</div>
+      <div class="kbh" id="kbhint">press or click 1&ndash;4 to answer</div>
+    </div>
     <div class="opts" id="op"></div>
-    <div class="kbh" id="kbhint" style="margin-top:8px">press or click 1&ndash;4 to answer</div>
     <div class="cflash hidden" id="cf"><div class="cfbig">&#10003; MATCH CONFIRMED</div><div class="cfpts" id="cp"></div></div>
   </div>
 </div>
@@ -332,14 +338,14 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 <script>
 /* ─── CONTENT LIBRARY ─── */
 const CL=[
-  [{h:"I Quit My Job To Become A Dog Influencer And Now I Have No Friends",e:["🐕","📸","👔","💔","😞"]},{h:"I Let My Cat Make All My Financial Decisions For A Year And We Lost Everything",e:["🐱","💰","📉","😰","💀"]},{h:"I Only Communicated In Emojis For A Week And My Therapist Quit",e:["💬","😶","📅","👩‍⚕️","🚪"]},{h:"I Spent A Year Saying Yes To Everything And Now I Own Three Timeshares",e:["✅","📅","😬","🏖️","💸"]},{h:"I Tried Living Like A Victorian For A Month And I Have Rickets Now",e:["🎩","📅","🕯️","🦴","😩"]},{h:"I Gave Up Electricity For 30 Days And My Family Has Filed For Divorce",e:["⚡","❌","📅","👨‍👩‍👧","⚖️"]}],
-  [{h:"27 Signs You're Definitely A Millennial And You're Probably Crying About It",e:["📱","☕","💀","💸","😭"]},{h:"Gen Z Is Killing The Napkin Industry And Honestly Boomers Have A Point",e:["🧻","📉","👴","😤","✅"]},{h:"Millennials Are Finally Buying Houses And Somehow This Is Also Bad News",e:["🏠","😬","💸","📰","😭"]},{h:"Boomers Discover Streaming Services And Declare Television Ruined Forever",e:["📺","👴","😡","💀","🎬"]},{h:"Gen Z Refuses To Use Email And Now The Entire Economy Is Collapsing",e:["📧","❌","📉","💀","🤷"]},{h:"Millennials Are Raising Plants Instead Of Children And Scientists Are Worried",e:["🪴","👶","❌","🔬","😟"]}],
-  [{h:"The Government Has Been Lying About How Many Holes Are In A Cracker",e:["🫙","🏛️","🕵️","🤯","🔍"]},{h:"Scientists Confirm Your Coworker Who Microwaves Fish Is Actually A Sociopath",e:["🐟","🔬","🏢","😈","⚗️"]},{h:"Apparently You've Been Breathing Wrong Your Entire Life And We're Sorry",e:["💨","😲","😔","📋","❌"]},{h:"Doctors Reveal The One Food That Is Somehow Both Killing You And Saving You",e:["🍎","👨‍⚕️","💀","✅","😵"]},{h:"New Study Finds Everything You Loved In The 90s Causes Cancer",e:["🔬","📊","💀","📼","😱"]},{h:"Experts Confirm Your Posture Right Now Is Already Destroying Your Spine",e:["💻","🪑","😬","🦴","💥"]}],
-  [{h:"10 Airbnbs So Remote You Will Almost Certainly Be Murdered There",e:["🏡","🌲","🗺️","🔪","😬"]},{h:"This Couple Quit Everything To Live In A Van And Now They Both Miss Toilets",e:["🚐","💑","🌅","🚽","😩"]},{h:"We Ranked Every Country By How Quickly You Would Die There Without Wi-Fi",e:["🌍","📶","❌","⏳","💀"]},{h:"This $19 Flight Has Seven Layovers And One Of The Airports Is A Field",e:["✈️","💸","🔄","🌾","😬"]},{h:"Digital Nomad Discovers That Working From Bali Is Just Working But Hotter",e:["💻","🌴","😰","☀️","😒"]},{h:"Woman Moves To Italian Village For $1 And Spends $200,000 On Structural Issues",e:["🏚️","🇮🇹","💵","🔨","😭"]}],
-  [{h:"My Husband Left Me For Someone He Met At A Bread-Making Class And I'm Not Even Mad",e:["🍞","💑","💔","😐","🤷"]},{h:"We Asked 1000 People If They Actually Like Their Partners And The Results Are Grim",e:["💑","📊","😬","❓","😶"]},{h:"This Dating App Matched Me With My Own Father And Other Horror Stories",e:["📱","❤️","👨","😱","🤖"]},{h:"I Planned The Perfect Proposal And She Said She Needed To Think About It",e:["💍","😬","🙏","⏳","😰"]},{h:"Man Proposes At His Ex's Wedding And Claims It Was A Coincidence",e:["💍","💒","😤","🤥","👀"]},{h:"Couple Survives 30 Days In The Wilderness And Breaks Up In The Parking Lot After",e:["🌲","💑","✅","🚗","💔"]}],
-  [{h:"Apparently You've Been Eating Spaghetti Wrong Your Entire Life And We're Sorry",e:["🍝","❌","😲","😔","🤌"]},{h:"This Restaurant Charges $400 For A Sandwich And Has A Three Year Wait List",e:["🥪","💸","⏳","📋","😤"]},{h:"The Internet Cannot Decide Whether This Meal Is Breakfast Or A Cry For Help",e:["🍳","❓","🌐","😬","🆘"]},{h:"Gordon Ramsay Tries A Hot Dog And Has To Go Lie Down For Several Hours",e:["🌭","😵","👨‍🍳","🛏️","⏳"]},{h:"This Town Smells Exactly Like Cinnamon Toast Crunch And Nobody Knows Why",e:["🏙️","👃","🥣","❓","🤷"]},{h:"We Tried The $1 Pizza Versus The $1000 Pizza And The $1 Was Fine",e:["🍕","💵","💎","😐","🤷"]}],
-  [{h:"We Ranked Every Taylor Swift Album And Yes We Will Be Accepting Lawsuits",e:["🎵","📊","👑","⚖️","😤"]},{h:"This Quiz Will Tell You Which Disney Princess You Are Based On Your Pasta Order",e:["🍝","👸","❓","✨","🔮"]},{h:"Someone Calculated How Much Money Squid Game Contestants Made Per Hour",e:["🦑","💰","🧮","😬","⏱️"]},{h:"We Watched All 847 Episodes Of Grey's Anatomy In One Week For Your Benefit",e:["📺","🏥","📅","💀","🫡"]},{h:"Celebrity Spotted Looking Completely Normal And The Nation Is Unsettled",e:["⭐","😐","📸","😱","🏙️"]},{h:"New Netflix Show Has 97 Percent Rating But Everyone Who Watched It Is Fine",e:["📺","🌟","😐","✅","🤷"]}],
-  [{h:"I Quit My Corporate Job To Sell Candles And Now I Work 90 Hours A Week",e:["🕯️","💼","😮‍💨","⏰","💀"]},{h:"This CEO Wakes Up At 3am Every Day And Is Deeply Unpleasant To Be Around",e:["⏰","👔","😤","☕","💀"]},{h:"LinkedIn Influencer Explains Why Suffering Builds Character And Gets 40,000 Likes",e:["💼","😢","✅","👍","🤔"]},{h:"Man Turns Passion Into Career And Reports That Passion Is Now Destroyed",e:["❤️","💼","💔","📉","😶"]},{h:"New Study Finds Open Plan Offices Cause The Same Stress As Active Combat",e:["🏢","😤","🪖","📊","💥"]},{h:"Tech Startup Offers Unlimited Vacation And Zero Employees Have Taken Any",e:["🏖️","✅","💼","📊","0️⃣"]}],
+  [{h:"I Quit My Job To Become A Dog Influencer And Now I Have No Friends",e:["🐕","📸","👔","💔","😞"]},{h:"I Let My Cat Make All My Financial Decisions For A Year And We Lost Everything",e:["🐱","💰","📉","😰","💀"]},{h:"I Only Communicated In Emojis For A Week And My Therapist Quit",e:["💬","😶","📅","👩‍⚕️","🚪"]},{h:"I Spent A Year Saying Yes To Everything And Now I Own Three Timeshares",e:["✅","📅","😬","🏖️","💸"]},{h:"I Tried Living Like A Victorian For A Month And I Have Rickets Now",e:["🎩","📅","🕯️","🦴","😩"]},{h:"I Gave Up Electricity For 30 Days And My Family Has Filed For Divorce",e:["⚡","❌","📅","👨‍👩‍👧","⚖️"]},{h:"I Wore The Same Outfit For A Month And No One Noticed Including My Wife",e:["👕","📅","👁️","❌","😶"]},{h:"I Replaced All My Furniture With Beanbags And My Back Has Filed A Complaint",e:["🪑","❌","😎","🦴","😭"]},{h:"I Deleted All Social Media And Now I Just Stare At Walls Competitively",e:["📱","🗑️","🧱","👀","🏆"]},{h:"I Ate Only Gas Station Food For A Month And The Results Surprised My Doctor",e:["⛽","🌭","📅","👨‍⚕️","😱"]}],
+  [{h:"27 Signs You're Definitely A Millennial And You're Probably Crying About It",e:["📱","☕","💀","💸","😭"]},{h:"Gen Z Is Killing The Napkin Industry And Honestly Boomers Have A Point",e:["🧻","📉","👴","😤","✅"]},{h:"Millennials Are Finally Buying Houses And Somehow This Is Also Bad News",e:["🏠","😬","💸","📰","😭"]},{h:"Boomers Discover Streaming Services And Declare Television Ruined Forever",e:["📺","👴","😡","💀","🎬"]},{h:"Gen Z Refuses To Use Email And Now The Entire Economy Is Collapsing",e:["📧","❌","📉","💀","🤷"]},{h:"Millennials Are Raising Plants Instead Of Children And Scientists Are Worried",e:["🪴","👶","❌","🔬","😟"]},{h:"Gen Alpha Has Invented A New Language And Linguists Are Openly Weeping",e:["👶","🗣️","❓","📖","😭"]},{h:"Boomers Discover TikTok And Immediately Report It To The Authorities",e:["👴","📱","🎵","🚨","😤"]},{h:"Millennials Now Spending More On Oat Milk Than Rent According To Study Nobody Asked For",e:["🥛","💸","🏠","📊","🤷"]},{h:"Gen Z Worker Asks For Feedback And Manager Needs Three Days To Recover",e:["💼","📝","😰","🛏️","📅"]}],
+  [{h:"The Government Has Been Lying About How Many Holes Are In A Cracker",e:["🫙","🏛️","🕵️","🤯","🔍"]},{h:"Scientists Confirm Your Coworker Who Microwaves Fish Is Actually A Sociopath",e:["🐟","🔬","🏢","😈","⚗️"]},{h:"Apparently You've Been Breathing Wrong Your Entire Life And We're Sorry",e:["💨","😲","😔","📋","❌"]},{h:"Doctors Reveal The One Food That Is Somehow Both Killing You And Saving You",e:["🍎","👨‍⚕️","💀","✅","😵"]},{h:"New Study Finds Everything You Loved In The 90s Causes Cancer",e:["🔬","📊","💀","📼","😱"]},{h:"Experts Confirm Your Posture Right Now Is Already Destroying Your Spine",e:["💻","🪑","😬","🦴","💥"]},{h:"Study Reveals People Who Wake At 5 AM Are Just As Miserable But Louder About It",e:["⏰","🌅","😤","📢","😩"]},{h:"Researchers Discover Your Phone Screen Has More Bacteria Than A Hospital Floor",e:["📱","🦠","🏥","🔬","🤢"]},{h:"Scientists Say Napping At Work Boosts Productivity But Your Boss Says No",e:["😴","💼","📈","🚫","😔"]},{h:"New Report Confirms That One Guy In Your Office Who Never Gets Sick Is Actually A Robot",e:["🏢","🤖","🔬","💪","😮"]}],
+  [{h:"10 Airbnbs So Remote You Will Almost Certainly Be Murdered There",e:["🏡","🌲","🗺️","🔪","😬"]},{h:"This Couple Quit Everything To Live In A Van And Now They Both Miss Toilets",e:["🚐","💑","🌅","🚽","😩"]},{h:"We Ranked Every Country By How Quickly You Would Die There Without Wi-Fi",e:["🌍","📶","❌","⏳","💀"]},{h:"This $19 Flight Has Seven Layovers And One Of The Airports Is A Field",e:["✈️","💸","🔄","🌾","😬"]},{h:"Digital Nomad Discovers That Working From Bali Is Just Working But Hotter",e:["💻","🌴","😰","☀️","😒"]},{h:"Woman Moves To Italian Village For $1 And Spends $200,000 On Structural Issues",e:["🏚️","🇮🇹","💵","🔨","😭"]},{h:"Tourist Follows Google Maps Into A Lake And Gives It One Star",e:["🗺️","🚗","🌊","⭐","😤"]},{h:"Airline Introduces Standing Room Flights And Calls It Premium Vertical Seating",e:["✈️","🧍","💺","💎","😐"]},{h:"Man Claims He Found Himself In Thailand But His Family Says He Was Always Like That",e:["🧘","🇹🇭","👨‍👩‍👦","🤷","😶"]},{h:"Hotel Charges $50 For Breakfast Buffet That Is Just Bread And Audacity",e:["🏨","🍞","💸","😤","🫠"]}],
+  [{h:"My Husband Left Me For Someone He Met At A Bread-Making Class And I'm Not Even Mad",e:["🍞","💑","💔","😐","🤷"]},{h:"We Asked 1000 People If They Actually Like Their Partners And The Results Are Grim",e:["💑","📊","😬","❓","😶"]},{h:"This Dating App Matched Me With My Own Father And Other Horror Stories",e:["📱","❤️","👨","😱","🤖"]},{h:"I Planned The Perfect Proposal And She Said She Needed To Think About It",e:["💍","😬","🙏","⏳","😰"]},{h:"Man Proposes At His Ex's Wedding And Claims It Was A Coincidence",e:["💍","💒","😤","🤥","👀"]},{h:"Couple Survives 30 Days In The Wilderness And Breaks Up In The Parking Lot After",e:["🌲","💑","✅","🚗","💔"]},{h:"Woman's Boyfriend Still Hasn't Defined The Relationship After Seven Years And A Mortgage",e:["💑","❓","📅","🏠","😐"]},{h:"Man Says I Love You For The First Time During An Argument About Dishes",e:["❤️","🗣️","😤","🍽️","😬"]},{h:"Couple Agrees To Split Everything 50/50 Except Emotional Labor Which Is 100/0",e:["💑","⚖️","💔","😮‍💨","📊"]},{h:"Dating Expert Says You Should Be Yourself Then Lists 47 Things To Change",e:["❤️","📝","🪞","😬","📋"]}],
+  [{h:"Apparently You've Been Eating Spaghetti Wrong Your Entire Life And We're Sorry",e:["🍝","❌","😲","😔","🤌"]},{h:"This Restaurant Charges $400 For A Sandwich And Has A Three Year Wait List",e:["🥪","💸","⏳","📋","😤"]},{h:"The Internet Cannot Decide Whether This Meal Is Breakfast Or A Cry For Help",e:["🍳","❓","🌐","😬","🆘"]},{h:"Gordon Ramsay Tries A Hot Dog And Has To Go Lie Down For Several Hours",e:["🌭","😵","👨‍🍳","🛏️","⏳"]},{h:"This Town Smells Exactly Like Cinnamon Toast Crunch And Nobody Knows Why",e:["🏙️","👃","🥣","❓","🤷"]},{h:"We Tried The $1 Pizza Versus The $1000 Pizza And The $1 Was Fine",e:["🍕","💵","💎","😐","🤷"]},{h:"Food Blogger Spends 4000 Words Describing Their Childhood Before Getting To The Recipe",e:["📝","👶","📜","😤","🍰"]},{h:"Avocado Toast Officially Costs More Than Some Studio Apartments In Ohio",e:["🥑","🍞","💸","🏠","😱"]},{h:"Man Brings His Own Hot Sauce To Five Star Restaurant And Chef Quits On The Spot",e:["🌶️","🍽️","⭐","👨‍🍳","🚪"]},{h:"New Trendy Diet Requires You To Only Eat Foods That Start With The Letter Q",e:["🍽️","❓","📋","🤔","😩"]}],
+  [{h:"We Ranked Every Taylor Swift Album And Yes We Will Be Accepting Lawsuits",e:["🎵","📊","👑","⚖️","😤"]},{h:"This Quiz Will Tell You Which Disney Princess You Are Based On Your Pasta Order",e:["🍝","👸","❓","✨","🔮"]},{h:"Someone Calculated How Much Money Squid Game Contestants Made Per Hour",e:["🦑","💰","🧮","😬","⏱️"]},{h:"We Watched All 847 Episodes Of Grey's Anatomy In One Week For Your Benefit",e:["📺","🏥","📅","💀","🫡"]},{h:"Celebrity Spotted Looking Completely Normal And The Nation Is Unsettled",e:["⭐","😐","📸","😱","🏙️"]},{h:"New Netflix Show Has 97 Percent Rating But Everyone Who Watched It Is Fine",e:["📺","🌟","😐","✅","🤷"]},{h:"Fan Theory Connects Every Pixar Movie And Also The Moon Landing Somehow",e:["🎬","🧠","🔗","🌙","🤯"]},{h:"Man Rewatches Entire Marvel Universe In Order And Forgets How To Have Conversations",e:["🦸","📺","🔁","🗣️","❌"]},{h:"Internet Decides This One Scene From A 2003 Movie Is Problematic Now",e:["🌐","🎬","😬","⚖️","📅"]},{h:"Award Show Nobody Asked For Announces Categories Nobody Understands",e:["🏆","❓","📋","🤔","😐"]}],
+  [{h:"I Quit My Corporate Job To Sell Candles And Now I Work 90 Hours A Week",e:["🕯️","💼","😮‍💨","⏰","💀"]},{h:"This CEO Wakes Up At 3am Every Day And Is Deeply Unpleasant To Be Around",e:["⏰","👔","😤","☕","💀"]},{h:"LinkedIn Influencer Explains Why Suffering Builds Character And Gets 40,000 Likes",e:["💼","😢","✅","👍","🤔"]},{h:"Man Turns Passion Into Career And Reports That Passion Is Now Destroyed",e:["❤️","💼","💔","📉","😶"]},{h:"New Study Finds Open Plan Offices Cause The Same Stress As Active Combat",e:["🏢","😤","🪖","📊","💥"]},{h:"Tech Startup Offers Unlimited Vacation And Zero Employees Have Taken Any",e:["🏖️","✅","💼","📊","0️⃣"]},{h:"Intern Accidentally Replies All To 10,000 People And Gets Promoted For Visibility",e:["📧","😱","👥","📈","🤷"]},{h:"Company Celebrates Record Profits By Laying Off The People Who Made Them",e:["💰","📈","🎉","🚪","😐"]},{h:"Manager Schedules Meeting To Discuss Why There Are Too Many Meetings",e:["📅","🗣️","🔄","😩","💼"]},{h:"Remote Worker Hasn't Worn Pants In Three Years And Considers This A Promotion",e:["🏠","👖","❌","📅","🎉"]}],
 ];
 const ALL=CL.flat();
 
@@ -484,7 +490,7 @@ function rq(){
 
   /* training status badge */
   const ts=document.getElementById('trainStatus');
-  ts.textContent=getRL(qn);
+  ts.textContent=getRL(qn)+' · '+playerDisplayName;
   ts.className='training-status '+getTrainClass(qn);
 
   const ed=document.getElementById('ed');
@@ -790,6 +796,25 @@ document.addEventListener('keydown',(e)=>{
   }
 });
 
+/* ─── FLOATING EMOJI REACT ─── */
+const REACT_EMOJIS=['😂','🔥','❤️','👀','🤯','✨','💀','🫠','👏','😭','🤡','💅','🙃','😎','🥳','💥'];
+function spawnEmojiReact(x,y){
+  const el=document.createElement('span');
+  el.className='emoji-react';
+  el.textContent=REACT_EMOJIS[Math.floor(Math.random()*REACT_EMOJIS.length)];
+  el.style.left=(x-12)+'px';el.style.top=(y-12)+'px';
+  document.body.appendChild(el);
+  el.addEventListener('animationend',()=>el.remove());
+}
+function initEmojiReacts(){
+  document.querySelectorAll('.section-link,.dispatch,.col-label,.top-ad-label,.masthead-motto,.masthead-side .edition').forEach(el=>{
+    el.style.cursor='pointer';
+    el.addEventListener('click',(e)=>{
+      spawnEmojiReact(e.clientX,e.clientY);
+    });
+  });
+}
+
 /* ─── INIT ─── */
 initMasthead();
 initWeather();
@@ -797,6 +822,7 @@ initTicker();
 refreshAds();
 initColumns();
 initBadge();
+initEmojiReacts();
 </script>
 </body>
 </html>

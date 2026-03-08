@@ -45,4 +45,8 @@ Then open `http://localhost:8765/clickmoji.html`.
 
 - **HTML/CSS/JS** — single file, zero dependencies
 - **Google Fonts** — Playfair Display, Libre Baskerville, Space Mono
-- 48 headlines across 8 categories, each with hand-crafted emoji translations
+- 80 headlines across 8 categories, each with hand-crafted emoji translations
+
+## Next Steps
+
+- **Multiplayer** — Real-time competitive mode where players race to match the same emoji sequences. Shared lobby with live scoreboards, streak tracking, and a "Breaking News" ticker announcing top plays. Could use WebSockets or WebRTC for peer-to-peer matches.

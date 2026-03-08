@@ -30,7 +30,7 @@ Three screens managed by toggling `.hidden` class on `#ss` (start), `#ga` (game)
 - `getRL(q)` — Employee rank title (INTERN → CHIEF EMOJI OFFICER)
 
 ### Question Data
-`HEADLINES` object: 8 categories, each with 6 `{text, emoji}` entries. 48 total headlines.
+`HEADLINES` object: 8 categories, each with 10 `{text, emoji}` entries. 80 total headlines.
 
 Categories: lifestyle, tech, food, health, travel, relationships, finance, culture.
 
