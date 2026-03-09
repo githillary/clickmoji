@@ -24,9 +24,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .masthead-center{text-align:center;flex:1}
 .masthead-title{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,54px);font-weight:900;letter-spacing:3px;color:var(--tx);line-height:1;margin-bottom:14px}
 .masthead-motto{font-family:'Libre Baskerville',serif;font-style:italic;font-size:10px;color:var(--mt);margin-top:3px;letter-spacing:.5px}
-.masthead-side{font-size:10px;color:var(--mt);line-height:1.7;min-width:140px}
-.masthead-side.right{text-align:right}
+.masthead-side{font-size:10px;color:var(--mt);line-height:1.7;min-width:140px;display:flex;flex-direction:column;justify-content:center}
+.masthead-side.right{text-align:right;align-items:flex-end}
 .masthead-side .edition{font-weight:700;color:var(--tx)}
+.masthead-date{font-weight:700;color:var(--tx)}
 .masthead-rule{max-width:1100px;margin:12px auto 0;padding:0 20px}
 .masthead-rule-line{height:3px;background:var(--tx);position:relative}
 .masthead-rule-line::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--tx)}
@@ -79,7 +80,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 
 /* ═══ GAME CONTAINER (fixed height) ═══ */
 .game-wrap{height:620px;display:flex;flex-direction:column;overflow:hidden;position:relative}
-.game-wrap>div{flex:1;overflow-y:auto}
+.game-wrap>div{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.game-wrap>div>.card,.game-wrap>div.start{flex:1}
 
 /* ═══ GAME CARD (newspaper-matched light) ═══ */
 .card{padding:24px;position:relative;overflow:hidden;background:var(--game-bg);color:var(--game-tx);border:1px solid var(--game-bd)}
@@ -99,11 +101,11 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 /* ═══ START SCREEN ═══ */
 .start{text-align:center;padding:24px;background:var(--game-bg);border:1px solid var(--game-bd)}
 .start-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4.5vw,32px);font-weight:900;line-height:1.15;margin-bottom:16px;color:var(--tx)}
-.start-sub{font-family:'Libre Baskerville',serif;font-size:11px;color:var(--mt);max-width:480px;margin:0 auto 24px;line-height:1.7}
+.start-sub{font-family:'Libre Baskerville',serif;font-size:11px;color:var(--mt);max-width:540px;margin:0 auto 24px;line-height:1.7}
 .start-sub strong{color:var(--tx)}
 
 /* ═══ EMPLOYEE BADGE ═══ */
-.badge-wrap{display:inline-block;border:2px solid var(--tx);padding:24px 32px;margin:0;background:var(--bg);position:relative}
+.badge-wrap{display:block;max-width:540px;width:100%;margin:0 auto;border:2px solid var(--tx);padding:24px 32px;background:var(--bg);position:relative}
 .badge-wrap::before{content:'EMPLOYEE ID';position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--game-bg);padding:0 8px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--mt)}
 .badge-photo{font-size:32px;margin-bottom:6px}
 .badge-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:4px}
@@ -161,10 +163,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .gohl{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(13px,2.5vw,16px);color:var(--tx);line-height:1.3}
 .gopw{margin-top:5px;font-size:11px;color:var(--mt);letter-spacing:.5px}
 .gopw span{color:var(--red)}
-.fsw{margin:14px 0 8px}
+.fsw{margin:16px 0 4px}
 .fsv{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(56px,14vw,90px);line-height:.9;color:var(--tx)}
-.fslbl{font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:6px;font-family:'Space Mono',monospace}
-.verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:10px 0 16px}
+.fslbl{font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:2px;font-family:'Space Mono',monospace}
+.verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:8px 0 16px}
 
 /* ═══ BUTTONS ═══ */
 .btnp{background:var(--tx);border:none;color:var(--bg);font-family:'Playfair Display',serif;font-weight:700;letter-spacing:1px;font-size:16px;padding:14px 44px;cursor:pointer;transition:all .2s}
@@ -184,6 +186,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 
 /* ═══ CONFETTI ═══ */
 .confetti{position:fixed;top:0;width:8px;height:8px;z-index:9999;pointer-events:none;animation:confettiFall var(--fall-dur,3s) cubic-bezier(.25,.46,.45,.94) forwards}
+.confetti-emoji{position:fixed;top:0;z-index:9999;pointer-events:none;animation:confettiFall var(--fall-dur,3s) cubic-bezier(.25,.46,.45,.94) forwards;line-height:1}
 @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg) translateX(0);opacity:1}75%{opacity:1}100%{transform:translateY(var(--fall-dist,600px)) rotate(var(--spin,720deg)) translateX(var(--sway,40px));opacity:0}}
 
 /* ═══ FLOATING EMOJI REACT ═══ */
@@ -203,7 +206,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 <header class="masthead">
   <div class="masthead-inner">
     <div class="masthead-side">
-      <div id="mastheadDate"></div>
+      <div class="masthead-date" id="mastheadDate"></div>
       <div class="weather" id="weatherDisplay"><span class="weather-emoji">🌤️</span><span class="weather-text">72°F, Existential</span></div>
     </div>
     <div class="masthead-center">
@@ -247,7 +250,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 <!-- START SCREEN -->
 <div id="ss" class="start">
   <div class="start-title">Welcome to<br>Clickmoji's Translation Desk</div>
-  <p class="start-sub">CLICKMOJI is going emoji-first. As our newest hire, your job is to prove you can <strong>match our AI's emoji translations to the correct headlines.</strong> One wrong match and you're done for the day.</p>
+  <p class="start-sub">CLICKMOJI is going emoji-first. As our newest hire, your job is to <strong>train our AI by matching emoji sequences to the correct headlines.</strong> One wrong match and you're done for the day.</p>
   <div class="badge-wrap">
     <div class="badge-photo" id="badgePhoto">🪪</div>
     <div class="badge-name-row"><input type="text" class="badge-input" id="playerName" maxlength="24" spellcheck="false"><span class="name-shuffle" onclick="regenName()" title="New name">🔀</span></div>
@@ -556,14 +559,14 @@ function winGame(){
   document.getElementById('ga').classList.add('hidden');
   document.getElementById('go').classList.remove('hidden');
   scrollGameTop();
-  document.getElementById('goLabel').textContent='— BREAKING —';
+  document.getElementById('goLabel').textContent='BREAKING';
   document.getElementById('goBig').textContent='Perfect Translation Record';
-  document.getElementById('goSub').textContent="The Translation Desk's first flawless employee.";
+  document.getElementById('goSub').textContent="The Translation Desk's first flawless employee: "+playerDisplayName+".";
   document.querySelector('.gorev').classList.add('hidden');
   document.getElementById('gsc').textContent=50;
   document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
   const btn=document.querySelector('#go .btnp');
-  btn.textContent='Keep Training \u23CE';
+  btn.textContent='Keep Training, '+playerDisplayName+' \u23CE';
   btn.onclick=function(){resetGame();};
   launchConfetti();
 }
@@ -574,7 +577,10 @@ function launchConfetti(){
   layer.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:9999';
   document.body.appendChild(layer);
   const colors=['#E8434A','#F5A623','#4CAF50','#2196F3','#9C27B0','#FF6B35','#FFD700','#E91E63'];
+  const celebEmoji=['🎉','🥳','✨','🎊','👑','🏆','⭐','💫','🌟'];
   const count=60;
+  const emojiCount=18;
+  const total=count+emojiCount;
   const vh=window.innerHeight;
   let done=0;
   for(let i=0;i<count;i++){
@@ -591,8 +597,23 @@ function launchConfetti(){
       c.style.setProperty('--fall-dur',(2.5+Math.random()*2.5)+'s');
       c.style.borderRadius=Math.random()>.5?'50%':'0';
       layer.appendChild(c);
-      c.addEventListener('animationend',()=>{c.remove();done++;if(done>=count)layer.remove();});
+      c.addEventListener('animationend',()=>{c.remove();done++;if(done>=total)layer.remove();});
     },i*35);
+  }
+  for(let i=0;i<emojiCount;i++){
+    setTimeout(()=>{
+      const e=document.createElement('span');
+      e.className='confetti-emoji';
+      e.textContent=celebEmoji[Math.floor(Math.random()*celebEmoji.length)];
+      e.style.left=Math.random()*100+'%';
+      e.style.fontSize=(16+Math.random()*14)+'px';
+      e.style.setProperty('--fall-dist',(vh+100)+'px');
+      e.style.setProperty('--sway',(Math.random()*100-50)+'px');
+      e.style.setProperty('--spin',(Math.random()*360-180)+'deg');
+      e.style.setProperty('--fall-dur',(3+Math.random()*2)+'s');
+      layer.appendChild(e);
+      e.addEventListener('animationend',()=>{e.remove();done++;if(done>=total)layer.remove();});
+    },i*120);
   }
 }
 
@@ -655,10 +676,12 @@ function initTicker(){
 }
 
 /* ─── MASTHEAD DATE ─── */
+const EDITIONS=["Lady Pompom Edition","Velvet Fog Edition","Phantom Comma Edition","Unsolicited Morning Edition","Last Resort Edition","Quiet Panic Edition","Haunted Serif Edition","Borrowed Time Edition"];
 function initMasthead(){
   const d=new Date();
   const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
   document.getElementById('mastheadDate').textContent=d.toLocaleDateString('en-US',opts);
+  document.querySelector('.edition').textContent=EDITIONS[Math.floor(Math.random()*EDITIONS.length)];
 }
 
 /* ─── WEATHER ─── */
