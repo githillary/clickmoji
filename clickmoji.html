@@ -831,8 +831,17 @@ function restoreTextMode(){
 
 /* ─── KEYBOARD ─── */
 document.addEventListener('keydown',(e)=>{
-  /* don't capture keys when typing in input */
-  if(document.activeElement&&document.activeElement.tagName==='INPUT')return;
+  const inInput=document.activeElement&&document.activeElement.tagName==='INPUT';
+
+  /* Allow Enter even from input (start game / restart) */
+  if(e.key==='Enter'&&!autoTimer){
+    e.preventDefault();
+    if(!document.getElementById('ss').classList.contains('hidden')){if(inInput)document.activeElement.blur();startGame();return;}
+    if(!document.getElementById('go').classList.contains('hidden')){resetGame();return;}
+  }
+
+  /* don't capture other keys when typing in input */
+  if(inInput)return;
 
   if(autoTimer&&Date.now()>=canSkipAt){
     clearTimeout(autoTimer);autoTimer=null;nextQ();return;
@@ -842,11 +851,6 @@ document.addEventListener('keydown',(e)=>{
     const btns=document.querySelectorAll('.ob:not(:disabled)');
     if(btns[idx])btns[idx].click();
     return;
-  }
-  if(e.key==='Enter'&&!autoTimer){
-    e.preventDefault();
-    if(!document.getElementById('ss').classList.contains('hidden')){startGame();return;}
-    if(!document.getElementById('go').classList.contains('hidden')){resetGame();return;}
   }
 });
 
