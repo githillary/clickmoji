@@ -192,6 +192,14 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 /* ═══ FLOATING EMOJI REACT ═══ */
 .emoji-react{position:fixed;pointer-events:none;z-index:9999;font-size:22px;animation:emojiFloat 1.4s cubic-bezier(.2,.8,.3,1) forwards}
 @keyframes emojiFloat{0%{opacity:1;transform:translateY(0) scale(.4) translateX(0)}15%{opacity:1;transform:translateY(-30px) scale(1.1) translateX(var(--drift))}100%{opacity:0;transform:translateY(-160px) scale(.7) translateX(var(--drift))}}
+
+/* ═══ MOBILE OVERRIDES (must be last to win specificity) ═══ */
+@media(max-width:500px){
+  .top-ad-wrap{display:none}
+  .page{padding:12px 0 20px}
+  .game-wrap{height:auto;overflow:visible}
+  .game-wrap>div{overflow:visible}
+}
 </style>
 </head>
 <body>
