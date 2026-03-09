@@ -79,8 +79,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .d-num{font-family:'Playfair Display',serif;font-size:16px;color:var(--mt);margin-right:6px}
 
 /* ═══ GAME CONTAINER (fixed height) ═══ */
-.game-wrap{height:480px;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.game-wrap{height:510px;display:flex;flex-direction:column;overflow:hidden;position:relative}
 .game-wrap>div{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.game-wrap>div>.card,.game-wrap>div.start{flex:1}
 
 /* ═══ GAME CARD (newspaper-matched light) ═══ */
 .card{padding:24px;position:relative;overflow:hidden;background:var(--game-bg);color:var(--game-tx);border:1px solid var(--game-bd)}
@@ -164,7 +165,10 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .fsw{margin:16px 0 4px}
 .fsv{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(56px,14vw,90px);line-height:.9;color:var(--tx)}
 .fslbl{font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:0;font-family:'Space Mono',monospace}
-.verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:8px 0 16px}
+.verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:14px 0 16px}
+.go-progress{max-width:260px;margin:0 auto 20px;height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden}
+.go-progress-bar{height:100%;background:var(--tx);border-radius:2px;transition:width .6s ease}
+.go-progress-lbl{font-size:8px;letter-spacing:2px;color:var(--mt);font-family:'Space Mono',monospace;margin-bottom:4px}
 
 /* ═══ BUTTONS ═══ */
 .btnp{background:var(--tx);border:none;color:var(--bg);font-family:'Playfair Display',serif;font-weight:700;letter-spacing:1px;font-size:16px;padding:14px 44px;cursor:pointer;transition:all .2s}
@@ -303,6 +307,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
     </div>
     <div class="fsw"><div class="fslbl">LEVEL</div><div class="fsv" id="gsc">0</div></div>
     <div class="verd" id="gv"></div>
+    <div class="go-progress"><div class="go-progress-lbl" id="goProgressLbl"></div><div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden"><div class="go-progress-bar" id="goProgressBar"></div></div></div>
     <button class="btnp" onclick="resetGame()">Clock back in &#x23CE;</button>
   </div>
 </div>
@@ -545,6 +550,8 @@ function gameOver(ch,cor){
   const title=getRL(S.q);
   document.getElementById('gsc').textContent=S.q;
   document.getElementById('gv').textContent=title;
+  document.getElementById('goProgressLbl').textContent=S.q+' of 50';
+  document.getElementById('goProgressBar').style.width=(S.q/50*100)+'%';
   const btn=document.querySelector('#go .btnp');
   btn.textContent='Clock back in \u23CE';
   btn.onclick=function(){resetGame();};
@@ -562,8 +569,10 @@ function winGame(){
   document.querySelector('.gorev').classList.add('hidden');
   document.getElementById('gsc').textContent=50;
   document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
+  document.getElementById('goProgressLbl').textContent='50 of 50';
+  document.getElementById('goProgressBar').style.width='100%';
   const btn=document.querySelector('#go .btnp');
-  btn.textContent='Keep Training \u23CE';
+  btn.textContent='Keep training \u23CE';
   btn.onclick=function(){resetGame();};
   launchConfetti();
 }
@@ -591,11 +600,11 @@ function launchConfetti(){
       c.style.setProperty('--fall-dist',(vh+100)+'px');
       c.style.setProperty('--sway',(Math.random()*120-60)+'px');
       c.style.setProperty('--spin',(Math.random()*1080-540)+'deg');
-      c.style.setProperty('--fall-dur',(2.5+Math.random()*2.5)+'s');
+      c.style.setProperty('--fall-dur',(4+Math.random()*3)+'s');
       c.style.borderRadius=Math.random()>.5?'50%':'0';
       layer.appendChild(c);
       c.addEventListener('animationend',()=>{c.remove();done++;if(done>=total)layer.remove();});
-    },i*35);
+    },i*40);
   }
   for(let i=0;i<emojiCount;i++){
     setTimeout(()=>{
@@ -603,11 +612,11 @@ function launchConfetti(){
       e.className='confetti-emoji';
       e.textContent=celebEmoji[Math.floor(Math.random()*celebEmoji.length)];
       e.style.left=Math.random()*100+'%';
-      e.style.fontSize=(16+Math.random()*14)+'px';
+      e.style.fontSize=(28+Math.random()*20)+'px';
       e.style.setProperty('--fall-dist',(vh+100)+'px');
       e.style.setProperty('--sway',(Math.random()*100-50)+'px');
       e.style.setProperty('--spin',(Math.random()*360-180)+'deg');
-      e.style.setProperty('--fall-dur',(3+Math.random()*2)+'s');
+      e.style.setProperty('--fall-dur',(5+Math.random()*3)+'s');
       layer.appendChild(e);
       e.addEventListener('animationend',()=>{e.remove();done++;if(done>=total)layer.remove();});
     },i*120);
@@ -658,7 +667,7 @@ function refreshAds(){
 }
 
 function initColumns(){
-  const items=shuffle(TREND_ITEMS).slice(0,6);
+  const items=shuffle(TREND_ITEMS).slice(0,5);
   document.getElementById('trending').innerHTML=items.map((t,i)=>`<div class="dispatch"><span class="d-num">${i+1}</span>${t}</div>`).join('');
 }
 
@@ -875,6 +884,110 @@ refreshAds();
 initColumns();
 initBadge();
 initEmojiReacts();
+
+/* ═══ TEST MODE (remove before finalizing) ═══ */
+(function(){
+  const tbar=document.createElement('div');
+  tbar.id='testBar';
+  tbar.style.cssText='position:fixed;bottom:0;left:0;right:0;z-index:99999;background:#1a1a1a;color:#fff;font-family:"Space Mono",monospace;font-size:11px;padding:6px 12px;display:flex;gap:5px;flex-wrap:wrap;align-items:center;border-top:2px solid #FFD700';
+  const lbl=document.createElement('span');
+  lbl.textContent='🧪 TEST';
+  lbl.style.cssText='font-weight:700;color:#FFD700;margin-right:4px;font-size:11px';
+  tbar.appendChild(lbl);
+
+  function btn(text,fn,color){
+    const b=document.createElement('button');
+    b.textContent=text;
+    b.style.cssText=`background:${color||'#333'};color:#fff;border:1px solid #555;padding:3px 8px;font-family:inherit;font-size:9px;cursor:pointer;border-radius:3px;white-space:nowrap`;
+    b.onmouseenter=()=>b.style.background='#555';
+    b.onmouseleave=()=>b.style.background=color||'#333';
+    b.onclick=fn;
+    tbar.appendChild(b);
+    return b;
+  }
+  function sep(){
+    const s=document.createElement('span');
+    s.textContent='│';
+    s.style.cssText='color:#555;margin:0 1px';
+    tbar.appendChild(s);
+  }
+  function hideAll(){
+    stopTimer();if(autoTimer){clearTimeout(autoTimer);autoTimer=null;}
+    ['ss','ga','go'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  }
+  function getName(){return document.getElementById('playerName').value.trim()||'Test Player';}
+  function testGame(round){
+    hideAll();
+    S={score:0,streak:round-1,best:round-1,q:round-1,used:[],hist:[],cur:null,timeLeft:0};
+    playerDisplayName=getName();
+    document.getElementById('ga').classList.remove('hidden');
+    scrollGameTop();bar();rq();
+  }
+  function testGameOver(msgIdx,level){
+    hideAll();
+    playerDisplayName=getName();
+    const sample=ALL[Math.floor(Math.random()*ALL.length)];
+    S.q=level;S.cur=sample;
+    document.getElementById('ga').classList.remove('hidden');
+    /* Override random selection — force specific message */
+    const origFn=Math.random;
+    Math.random=()=>msgIdx/(GAME_OVER_HEADLINES.length);
+    gameOver(ALL.find(x=>x.h!==sample.h).h,sample.h);
+    Math.random=origFn;
+  }
+
+  /* ── Screens ── */
+  btn('Intro',()=>{hideAll();document.getElementById('ss').classList.remove('hidden');scrollGameTop();},'#2D3A2E');
+  sep();
+
+  /* ── Game rounds with timer info ── */
+  btn('Rd 1 · no ⏱',()=>testGame(1),'#2D3A2E');
+  btn('Rd 11 · ⏱20s',()=>testGame(11),'#2D3A2E');
+  btn('Rd 16 · ⏱16s',()=>testGame(16),'#2D3A2E');
+  btn('Rd 25 · ⏱13s',()=>testGame(25),'#2D3A2E');
+  btn('Rd 35 · ⏱11s',()=>testGame(35),'#2D3A2E');
+  btn('Rd 45 · ⏱9s',()=>testGame(45),'#2D3A2E');
+  sep();
+
+  /* ── Game over messages (all 5) ── */
+  const goLabels=['Correction','Memo','Retraction','Bulletin','Report'];
+  const goLevels=[3,15,25,35,45];
+  goLabels.forEach((label,i)=>{
+    btn('GO: '+label+' (Lv'+goLevels[i]+')',()=>testGameOver(i,goLevels[i]),'#9B1B1B');
+  });
+  btn('GO: Long HL',()=>{
+    hideAll();playerDisplayName=getName();
+    const longest=ALL.reduce((a,b)=>a.h.length>b.h.length?a:b);
+    S.q=32;S.cur=longest;
+    document.getElementById('ga').classList.remove('hidden');
+    gameOver(ALL.find(x=>x.h!==longest.h).h,longest.h);
+  },'#9B1B1B');
+  sep();
+
+  /* ── Win ── */
+  btn('Win',()=>{hideAll();playerDisplayName=getName();S.q=49;document.getElementById('ga').classList.remove('hidden');winGame();},'#8B7525');
+  btn('Win (quiet)',()=>{
+    hideAll();playerDisplayName=getName();
+    document.getElementById('go').classList.remove('hidden');
+    scrollGameTop();
+    document.getElementById('goLabel').textContent='BREAKING';
+    document.getElementById('goBig').textContent='Perfect Translation Record';
+    document.getElementById('goSub').textContent="The Translation Desk's first flawless employee: "+playerDisplayName+".";
+    document.querySelector('.gorev').classList.add('hidden');
+    document.getElementById('gsc').textContent=50;
+    document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
+    document.getElementById('goProgressLbl').textContent='50 of 50';
+    document.getElementById('goProgressBar').style.width='100%';
+    const b=document.querySelector('#go .btnp');b.textContent='Keep training \u23CE';b.onclick=function(){resetGame();};
+  },'#8B7525');
+  sep();
+
+  /* ── Utilities ── */
+  btn('Emoji',()=>setLangMode(emojiMode?'english':'emoji'),'#4A3728');
+  btn('Confetti',()=>launchConfetti(),'#4A3728');
+
+  document.body.appendChild(tbar);
+})();
 </script>
 </body>
 </html>
