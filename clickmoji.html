@@ -166,7 +166,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .fsv{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(56px,14vw,90px);line-height:.9;color:var(--tx)}
 .fslbl{font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:0;font-family:'Space Mono',monospace}
 .verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:14px 0 16px}
-.go-progress{max-width:260px;margin:0 auto 20px;height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden}
+.go-progress{max-width:260px;margin:0 auto 20px}
 .go-progress-bar{height:100%;background:var(--tx);border-radius:2px;transition:width .6s ease}
 .go-progress-lbl{font-size:8px;letter-spacing:2px;color:var(--mt);font-family:'Space Mono',monospace;margin-bottom:4px}
 
@@ -303,7 +303,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
     <div class="gorev">
       <div class="goemoji" id="ge"></div>
       <div class="gohl" id="gh"></div>
-      <div class="gopw">you matched: <span id="gp"></span></div>
+      <div class="gopw">You matched: <span id="gp"></span></div>
     </div>
     <div class="fsw"><div class="fslbl">LEVEL</div><div class="fsv" id="gsc">0</div></div>
     <div class="verd" id="gv"></div>
@@ -340,21 +340,21 @@ const ALL=CL.flat();
 
 /* ─── FAKE ADS (prestige/classified parody) ─── */
 const ADS=[
-  {cat:"ADVERTISEMENT",t:"Artisanal Silence — Now Available in Jars",sub:"Hand-harvested from a monastery in Provence. $340/oz. Free shipping over $2,000.",em:"🤫🏺",cta:"Shop Silence"},
-  {cat:"ADVERTISEMENT",t:"Bespoke Anxiety, Tailored to You",sub:"Why settle for generic dread? Our master craftsmen create worry unique to your circumstances. Est. 1847.",em:"🧵😰",cta:"Browse Dread"},
-  {cat:"ADVERTISEMENT",t:"The Helvetica Wristwatch",sub:"It doesn't tell time. It implies it. Starting at $12,400.",em:"⌚✨",cta:"Imply Now"},
-  {cat:"ADVERTISEMENT",t:"Premium Hand-Sorted Oxygen",sub:"Each molecule individually inspected. \"Breathing has never felt so intentional.\" — subscriber",em:"💨🔬",cta:"Breathe Better"},
-  {cat:"CLASSIFIEDS",t:"SEEKING: One (1) Sense of Purpose",sub:"Condition: new or gently used. Previous owner pivoted to crypto. Will pay up to $12.99.",em:"🧠💸",cta:"Inquire Within"},
-  {cat:"CLASSIFIEDS",t:"FOR SALE: Antique Attention Span (c. 2005)",sub:"Capable of reading an entire article without checking phone. Collector's item. $8,400 OBO.",em:"🧠⏱️",cta:"Place A Bid"},
-  {cat:"ADVERTISEMENT",t:"Estate-Bottled Disappointment",sub:"Notes of overtime, cold coffee, and unreturned calls. 94 points — Wine Spectator.",em:"🍷😩",cta:"Order A Case"},
-  {cat:"REAL ESTATE",t:"LUXURY 1BR — $4,200/mo",sub:"Charming 340 sq ft. Exposed everything. \"Character.\" Doorman judges you silently. No pets, no cooking, no joy.",em:"🏢🔑",cta:"Schedule Tour"},
-  {cat:"ADVERTISEMENT",t:"The Ottolenghi Doorstop",sub:"A cookbook so beautiful you will never open it. Display edition. Gilt edges. $85.",em:"📖✨",cta:"Add To Shelf"},
-  {cat:"CLASSIFIEDS",t:"LOST: All Momentum (vicinity of Tuesday)",sub:"Last seen during a 3pm meeting. No distinguishing features. Reward: the rest of the week off.",em:"📋😶",cta:"Report Sighting"},
-  {cat:"ADVERTISEMENT",t:"Noise-Canceling Headphones for Your Thoughts",sub:"Finally. ANC technology that blocks your own internal monologue. FDA pending.",em:"🎧🧠",cta:"Silence Yourself"},
-  {cat:"ADVERTISEMENT",t:"Subscribe to Our Newsletter",sub:"We will email you every single day until one of us perishes. Unsubscribe link rendered in 4pt font.",em:"📧♾️",cta:"Subscribe Forever"},
-  {cat:"REAL ESTATE",t:"COUNTRY ESTATE — $2.1M",sub:"12 acres. Built 1803. Ghosts included at no additional charge. \"They're mostly in the east wing.\"",em:"🏚️👻",cta:"View Listing"},
-  {cat:"CLASSIFIEDS",t:"FREE: Partially Used New Year's Resolutions",sub:"Includes gym membership (unused since Jan 4), meditation app, and a journal with one entry.",em:"📓🏋️",cta:"Claim Yours"},
-  {cat:"ADVERTISEMENT",t:"Grandma's Recipe for Success",sub:"Ingredients: guilt, passive aggression, casserole. Serves: the entire extended family whether they like it or not.",em:"👵🍲",cta:"Get The Recipe"},
+  {cat:"ADVERTISEMENT",t:"Artisanal Silence — Now Available in Jars",sub:"Hand-harvested from a monastery in Provence. $340/oz. Free shipping over $2,000.",em:"🤫🏺",cta:"Shop silence"},
+  {cat:"ADVERTISEMENT",t:"Bespoke Anxiety, Tailored to You",sub:"Why settle for generic dread? Our master craftsmen create worry unique to your circumstances. Est. 1847.",em:"🧵😰",cta:"Browse dread"},
+  {cat:"ADVERTISEMENT",t:"The Helvetica Wristwatch",sub:"It doesn't tell time. It implies it. Starting at $12,400.",em:"⌚✨",cta:"Imply now"},
+  {cat:"ADVERTISEMENT",t:"Premium Hand-Sorted Oxygen",sub:"Each molecule individually inspected. \"Breathing has never felt so intentional.\" — subscriber",em:"💨🔬",cta:"Breathe better"},
+  {cat:"CLASSIFIEDS",t:"SEEKING: One (1) Sense of Purpose",sub:"Condition: new or gently used. Previous owner pivoted to crypto. Will pay up to $12.99.",em:"🧠💸",cta:"Inquire within"},
+  {cat:"CLASSIFIEDS",t:"FOR SALE: Antique Attention Span (c. 2005)",sub:"Capable of reading an entire article without checking phone. Collector's item. $8,400 OBO.",em:"🧠⏱️",cta:"Place a bid"},
+  {cat:"ADVERTISEMENT",t:"Estate-Bottled Disappointment",sub:"Notes of overtime, cold coffee, and unreturned calls. 94 points — Wine Spectator.",em:"🍷😩",cta:"Order a case"},
+  {cat:"REAL ESTATE",t:"LUXURY 1BR — $4,200/mo",sub:"Charming 340 sq ft. Exposed everything. \"Character.\" Doorman judges you silently. No pets, no cooking, no joy.",em:"🏢🔑",cta:"Schedule tour"},
+  {cat:"ADVERTISEMENT",t:"The Ottolenghi Doorstop",sub:"A cookbook so beautiful you will never open it. Display edition. Gilt edges. $85.",em:"📖✨",cta:"Add to shelf"},
+  {cat:"CLASSIFIEDS",t:"LOST: All Momentum (vicinity of Tuesday)",sub:"Last seen during a 3pm meeting. No distinguishing features. Reward: the rest of the week off.",em:"📋😶",cta:"Report sighting"},
+  {cat:"ADVERTISEMENT",t:"Noise-Canceling Headphones for Your Thoughts",sub:"Finally. ANC technology that blocks your own internal monologue. FDA pending.",em:"🎧🧠",cta:"Silence yourself"},
+  {cat:"ADVERTISEMENT",t:"Subscribe to Our Newsletter",sub:"We will email you every single day until one of us perishes. Unsubscribe link rendered in 4pt font.",em:"📧♾️",cta:"Subscribe forever"},
+  {cat:"REAL ESTATE",t:"COUNTRY ESTATE — $2.1M",sub:"12 acres. Built 1803. Ghosts included at no additional charge. \"They're mostly in the east wing.\"",em:"🏚️👻",cta:"View listing"},
+  {cat:"CLASSIFIEDS",t:"FREE: Partially Used New Year's Resolutions",sub:"Includes gym membership (unused since Jan 4), meditation app, and a journal with one entry.",em:"📓🏋️",cta:"Claim yours"},
+  {cat:"ADVERTISEMENT",t:"Grandma's Recipe for Success",sub:"Ingredients: guilt, passive aggression, casserole. Serves: the entire extended family whether they like it or not.",em:"👵🍲",cta:"Get the recipe"},
 ];
 
 const TREND_ITEMS=[
@@ -409,10 +409,10 @@ let playerDisplayName='Employee #2,026';
 
 const GAME_OVER_HEADLINES=[
   {label:"— CORRECTION —",big:"We Regret the Error",sub:()=>`An earlier version of this training session contained an employee (${playerDisplayName}) who knew what they were doing. This has been corrected.`},
-  {label:"INTERNAL MEMO",big:()=>`${playerDisplayName}: Terminated`,sub:()=>`HR confirms ${playerDisplayName} failed to meet minimum emoji literacy requirements. Personal effects can be collected from the lobby.`},
+  {label:"— INTERNAL MEMO —",big:()=>`${playerDisplayName}: Terminated`,sub:()=>`HR confirms ${playerDisplayName} failed to meet minimum emoji literacy requirements. Personal effects can be collected from the lobby.`},
   {label:"— RETRACTION —",big:"Translation Quality Below Standards",sub:()=>`The Editors regret to inform ${playerDisplayName} that their performance review has been updated accordingly.`},
-  {label:"LATE BULLETIN",big:"AI Outperforms Human Trainee",sub:()=>`Officials report the translation AI has formally requested a more competent supervisor than ${playerDisplayName}.`},
-  {label:"SPECIAL REPORT",big:"Training Session Ends Early",sub:()=>`A promising calibration attempt by ${playerDisplayName} ended prematurely today, leaving the Emoji Desk short-staffed once again.`},
+  {label:"— LATE BULLETIN —",big:"AI Outperforms Human Trainee",sub:()=>`Officials report the translation AI has formally requested a more competent supervisor than ${playerDisplayName}.`},
+  {label:"— SPECIAL REPORT —",big:"Training Session Ends Early",sub:()=>`A promising calibration attempt by ${playerDisplayName} ended prematurely today, leaving the Translation Desk short-staffed once again.`},
 ];
 
 /* ─── STATE ─── */
@@ -563,9 +563,9 @@ function winGame(){
   document.getElementById('ga').classList.add('hidden');
   document.getElementById('go').classList.remove('hidden');
   scrollGameTop();
-  document.getElementById('goLabel').textContent='BREAKING';
-  document.getElementById('goBig').textContent='Perfect Translation Record';
-  document.getElementById('goSub').textContent="The Translation Desk's first flawless employee: "+playerDisplayName+".";
+  document.getElementById('goLabel').textContent='\u2014 BREAKING \u2014';
+  document.getElementById('goBig').textContent='Translation Desk History Made by One '+playerDisplayName;
+  document.getElementById('goSub').textContent="In a historic first, all 50 emoji sequences translated without a single error.";
   document.querySelector('.gorev').classList.add('hidden');
   document.getElementById('gsc').textContent=50;
   document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
@@ -657,7 +657,7 @@ function confirmRestart(){
 function shuffle(a){return[...a].sort(()=>Math.random()-.5);}
 
 function renderTopAd(el,ad){
-  el.innerHTML=`<span class="top-ad-emoji">${ad.em}</span><div class="top-ad-body"><div class="top-ad-title">${ad.t}</div><div class="top-ad-sub">${ad.sub}</div></div><button class="top-ad-cta" onclick="spawnEmojiReact(event.clientX,event.clientY)">${ad.cta||'Learn More'}</button>`;
+  el.innerHTML=`<span class="top-ad-emoji">${ad.em}</span><div class="top-ad-body"><div class="top-ad-title">${ad.t}</div><div class="top-ad-sub">${ad.sub}</div></div><button class="top-ad-cta" onclick="spawnEmojiReact(event.clientX,event.clientY)">${ad.cta||'Learn more'}</button>`;
 }
 
 function refreshAds(){
@@ -966,27 +966,20 @@ initEmojiReacts();
 
   /* ── Win ── */
   btn('Win',()=>{hideAll();playerDisplayName=getName();S.q=49;document.getElementById('ga').classList.remove('hidden');winGame();},'#8B7525');
-  btn('Win (quiet)',()=>{
-    hideAll();playerDisplayName=getName();
-    document.getElementById('go').classList.remove('hidden');
-    scrollGameTop();
-    document.getElementById('goLabel').textContent='BREAKING';
-    document.getElementById('goBig').textContent='Perfect Translation Record';
-    document.getElementById('goSub').textContent="The Translation Desk's first flawless employee: "+playerDisplayName+".";
-    document.querySelector('.gorev').classList.add('hidden');
-    document.getElementById('gsc').textContent=50;
-    document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
-    document.getElementById('goProgressLbl').textContent='50 of 50';
-    document.getElementById('goProgressBar').style.width='100%';
-    const b=document.querySelector('#go .btnp');b.textContent='Keep training \u23CE';b.onclick=function(){resetGame();};
-  },'#8B7525');
-  sep();
-
-  /* ── Utilities ── */
-  btn('Emoji',()=>setLangMode(emojiMode?'english':'emoji'),'#4A3728');
-  btn('Confetti',()=>launchConfetti(),'#4A3728');
 
   document.body.appendChild(tbar);
+
+  /* ── FAB toggle ── */
+  const fab=document.createElement('button');
+  fab.textContent='🧪';
+  fab.style.cssText='position:fixed;bottom:52px;right:12px;z-index:100000;width:36px;height:36px;border-radius:50%;border:2px solid #FFD700;background:#1a1a1a;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:opacity .2s';
+  fab.onclick=()=>{
+    const hidden=tbar.style.display==='none';
+    tbar.style.display=hidden?'flex':'none';
+    fab.style.opacity=hidden?'1':'0.4';
+    fab.style.bottom=hidden?'52px':'12px';
+  };
+  document.body.appendChild(fab);
 })();
 </script>
 </body>
