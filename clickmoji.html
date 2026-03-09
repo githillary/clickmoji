@@ -80,7 +80,7 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 
 /* ═══ GAME CONTAINER (fixed height) ═══ */
 .game-wrap{height:510px;display:flex;flex-direction:column;overflow:hidden;position:relative}
-.game-wrap>div{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.game-wrap>div{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .game-wrap>div>.card,.game-wrap>div.start{flex:1}
 
 /* ═══ GAME CARD (newspaper-matched light) ═══ */
@@ -164,11 +164,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
 .gopw span{color:var(--red)}
 .fsw{margin:16px 0 4px}
 .fsv{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(56px,14vw,90px);line-height:.9;color:var(--tx)}
-.fslbl{font-size:8px;letter-spacing:3px;color:var(--mt);text-transform:uppercase;margin-bottom:0;font-family:'Space Mono',monospace}
 .verd{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(14px,3vw,22px);color:var(--tx);margin:14px 0 16px}
 .go-progress{max-width:260px;margin:0 auto 20px}
 .go-progress-bar{height:100%;background:var(--tx);border-radius:2px;transition:width .6s ease}
-.go-progress-lbl{font-size:8px;letter-spacing:2px;color:var(--mt);font-family:'Space Mono',monospace;margin-bottom:4px}
 
 /* ═══ BUTTONS ═══ */
 .btnp{background:var(--tx);border:none;color:var(--bg);font-family:'Playfair Display',serif;font-weight:700;letter-spacing:1px;font-size:16px;padding:14px 44px;cursor:pointer;transition:all .2s}
@@ -305,9 +303,9 @@ body{background:var(--bg);color:var(--tx);font-family:'Libre Baskerville',Georgi
       <div class="gohl" id="gh"></div>
       <div class="gopw">You matched: <span id="gp"></span></div>
     </div>
-    <div class="fsw"><div class="fslbl">LEVEL</div><div class="fsv" id="gsc">0</div></div>
+    <div class="fsw"><div class="fsv" id="gsc">0</div></div>
     <div class="verd" id="gv"></div>
-    <div class="go-progress"><div class="go-progress-lbl" id="goProgressLbl"></div><div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden"><div class="go-progress-bar" id="goProgressBar"></div></div></div>
+    <div class="go-progress"><div style="height:4px;background:rgba(0,0,0,.08);border-radius:2px;overflow:hidden"><div class="go-progress-bar" id="goProgressBar"></div></div></div>
     <button class="btnp" onclick="resetGame()">Clock back in &#x23CE;</button>
   </div>
 </div>
@@ -550,8 +548,8 @@ function gameOver(ch,cor){
   const title=getRL(S.q);
   document.getElementById('gsc').textContent=S.q;
   document.getElementById('gv').textContent=title;
-  document.getElementById('goProgressLbl').textContent=S.q+' of 50';
   document.getElementById('goProgressBar').style.width=(S.q/50*100)+'%';
+  const cel=document.getElementById('goCelebrate');if(cel)cel.classList.add('hidden');
   const btn=document.querySelector('#go .btnp');
   btn.textContent='Clock back in \u23CE';
   btn.onclick=function(){resetGame();};
@@ -569,11 +567,15 @@ function winGame(){
   document.querySelector('.gorev').classList.add('hidden');
   document.getElementById('gsc').textContent=50;
   document.getElementById('gv').textContent='CHIEF EMOJI OFFICER';
-  document.getElementById('goProgressLbl').textContent='50 of 50';
   document.getElementById('goProgressBar').style.width='100%';
   const btn=document.querySelector('#go .btnp');
   btn.textContent='Keep training \u23CE';
   btn.onclick=function(){resetGame();};
+  /* Celebrate link */
+  let cel=document.getElementById('goCelebrate');
+  if(!cel){cel=document.createElement('div');cel.id='goCelebrate';cel.style.cssText='margin-top:10px';btn.parentNode.insertBefore(cel,btn.nextSibling);}
+  cel.innerHTML='<span class="card-restart" style="margin-left:0" onclick="launchConfetti()">\u2728 Celebrate me, '+playerDisplayName.replace(/</g,'&lt;')+', again</span>';
+  cel.classList.remove('hidden');
   launchConfetti();
 }
 
@@ -941,12 +943,12 @@ initEmojiReacts();
   sep();
 
   /* ── Game rounds with timer info ── */
-  btn('Rd 1 · no ⏱',()=>testGame(1),'#2D3A2E');
-  btn('Rd 11 · ⏱20s',()=>testGame(11),'#2D3A2E');
-  btn('Rd 16 · ⏱16s',()=>testGame(16),'#2D3A2E');
-  btn('Rd 25 · ⏱13s',()=>testGame(25),'#2D3A2E');
-  btn('Rd 35 · ⏱11s',()=>testGame(35),'#2D3A2E');
-  btn('Rd 45 · ⏱9s',()=>testGame(45),'#2D3A2E');
+  btn('Lv 1 · no ⏱',()=>testGame(1),'#2D3A2E');
+  btn('Lv 11 · ⏱20s',()=>testGame(11),'#2D3A2E');
+  btn('Lv 16 · ⏱16s',()=>testGame(16),'#2D3A2E');
+  btn('Lv 25 · ⏱13s',()=>testGame(25),'#2D3A2E');
+  btn('Lv 35 · ⏱11s',()=>testGame(35),'#2D3A2E');
+  btn('Lv 45 · ⏱9s',()=>testGame(45),'#2D3A2E');
   sep();
 
   /* ── Game over messages (all 5) ── */
@@ -955,13 +957,6 @@ initEmojiReacts();
   goLabels.forEach((label,i)=>{
     btn('GO: '+label+' (Lv'+goLevels[i]+')',()=>testGameOver(i,goLevels[i]),'#9B1B1B');
   });
-  btn('GO: Long HL',()=>{
-    hideAll();playerDisplayName=getName();
-    const longest=ALL.reduce((a,b)=>a.h.length>b.h.length?a:b);
-    S.q=32;S.cur=longest;
-    document.getElementById('ga').classList.remove('hidden');
-    gameOver(ALL.find(x=>x.h!==longest.h).h,longest.h);
-  },'#9B1B1B');
   sep();
 
   /* ── Win ── */
