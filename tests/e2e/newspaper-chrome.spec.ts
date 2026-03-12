@@ -65,10 +65,10 @@ test.describe("Newspaper chrome", () => {
   });
 
   test("top ad is displayed with content", async ({ page }) => {
-    await expect(page.locator(".top-ad-wrap")).toBeVisible();
-    await expect(page.locator(".top-ad-label")).toContainText("Advertisement");
-    await expect(page.locator(".top-ad-title")).toBeVisible();
-    await expect(page.locator(".top-ad-cta")).toBeVisible();
+    await expect(page.locator(".press-notice-wrap")).toBeVisible();
+    await expect(page.locator(".press-notice-label")).toContainText("Advertisement");
+    await expect(page.locator(".press-notice-title")).toBeVisible();
+    await expect(page.locator(".press-notice-cta")).toBeVisible();
   });
 
   test("right column shows Most Read dispatches", async ({ page }) => {

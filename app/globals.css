@@ -212,14 +212,14 @@ body {
   font-weight: 700;
 }
 
-/* ═══ TOP AD ═══ */
-.top-ad-wrap {
+/* ═══ PRESS NOTICE (satirical ad banner) ═══ */
+.press-notice-wrap {
   max-width: 1100px;
   margin: 0 auto;
   padding: 14px 20px;
   text-align: center;
 }
-.top-ad-label {
+.press-notice-label {
   font-family: var(--font-baskerville), "Libre Baskerville", serif;
   font-size: 8px;
   letter-spacing: 3px;
@@ -227,7 +227,7 @@ body {
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-.top-ad {
+.press-notice {
   background: none;
   border: 1px solid var(--bd);
   padding: 18px 24px;
@@ -236,27 +236,27 @@ body {
   gap: 20px;
   min-height: 80px;
 }
-.top-ad-emoji {
+.press-notice-emoji {
   font-size: 36px;
   flex-shrink: 0;
 }
-.top-ad-body {
+.press-notice-body {
   text-align: left;
   flex: 1;
 }
-.top-ad-title {
+.press-notice-title {
   font-family: var(--font-playfair), "Playfair Display", serif;
   font-weight: 700;
   font-size: 15px;
   line-height: 1.3;
 }
-.top-ad-sub {
+.press-notice-sub {
   font-size: 11px;
   color: var(--mt);
   margin-top: 3px;
   line-height: 1.4;
 }
-.top-ad-cta {
+.press-notice-cta {
   font-family: var(--font-playfair), "Playfair Display", serif;
   font-size: 12px;
   font-weight: 700;
@@ -269,7 +269,7 @@ body {
   transition: all 0.15s;
   flex-shrink: 0;
 }
-.top-ad-cta:hover {
+.press-notice-cta:hover {
   background: var(--tx);
   color: var(--bg);
 }
@@ -967,7 +967,7 @@ body {
 
 /* ═══ MOBILE OVERRIDES ═══ */
 @media (max-width: 500px) {
-  .top-ad-wrap {
+  .press-notice-wrap {
     display: none;
   }
   .page {

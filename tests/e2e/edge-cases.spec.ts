@@ -97,7 +97,7 @@ test.describe("Edge cases", () => {
     await page.goto("/");
 
     // Get initial ad title
-    const adTitle = page.locator(".top-ad-title");
+    const adTitle = page.locator(".press-notice-title");
     const initialAd = await adTitle.textContent();
 
     await page.locator(".btnp").click();

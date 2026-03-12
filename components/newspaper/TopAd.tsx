@@ -29,19 +29,19 @@ export default function TopAd({ emojiMode, refreshKey }: TopAdProps) {
   if (!ad) return null;
 
   return (
-    <div className="top-ad-wrap">
-      <div className="top-ad-label">Advertisement</div>
-      <div className="top-ad">
-        <span className="top-ad-emoji">{ad.em}</span>
-        <div className="top-ad-body">
-          <div className="top-ad-title">
+    <div className="press-notice-wrap">
+      <div className="press-notice-label">Advertisement</div>
+      <div className="press-notice">
+        <span className="press-notice-emoji">{ad.em}</span>
+        <div className="press-notice-body">
+          <div className="press-notice-title">
             {emojiMode ? "🛒✨💰🔥" : ad.t}
           </div>
-          <div className="top-ad-sub">
+          <div className="press-notice-sub">
             {emojiMode ? "👆👆👆 💵➡️😊" : ad.sub}
           </div>
         </div>
-        <button className="top-ad-cta" onClick={handleCtaClick}>
+        <button className="press-notice-cta" onClick={handleCtaClick}>
           {emojiMode ? "👆" : ad.cta || "Learn more"}
         </button>
       </div>
